@@ -1,4 +1,4 @@
-    # Simple Blockchain Project
+# Simple Blockchain Project
 
 ## Overview
 
@@ -22,6 +22,11 @@ This project demonstrates a very simple blockchain implementation. The blockchai
    - Continuously checks for ledgers that are not hashed and not marked as the latest.
    - Mines these ledgers by finding a `stamp` that generates a valid hash with a certain difficulty (e.g., leading zeros).
    - Updates the JSON file (`ledgers.json`) with the `stamp` and `hash` values.
+
+4. **Blockchain Explorer (`data_grabber.py`, `templates/index.html`)**
+   - Provides a web interface to view the blockchain data.
+   - Displays blocks, transactions, and user balances.
+   - Uses Flask and Socket.IO to serve the web interface and update data in real-time.
 
 ### JSON Structure
 
@@ -82,6 +87,23 @@ python mining.py
 
 This script continuously mines new ledgers that are ready to be mined and updates the `ledgers.json` file with the results.
 
+#### Blockchain Explorer
+
+To run the blockchain explorer:
+
+```bash
+python data_grabber.py
+```
+
+This script starts a Flask web server and serves the blockchain explorer interface at `http://localhost:5000`.
+
 ## Conclusion
 
 This simple blockchain project provides a basic implementation of a blockchain using Python and JSON files. It covers the fundamental aspects of blockchain technology, including ledger creation, transaction handling, and mining. This project is a great starting point for anyone looking to learn about blockchains and their underlying principles.
+
+## Changelog
+
+### v1.1
+- Added a blockchain explorer with a web interface using Flask and Socket.IO.
+- Displays blocks, transactions, and user balances in real-time.
+- Added `data_grabber.py` and `templates/index.html` for the web interface.
