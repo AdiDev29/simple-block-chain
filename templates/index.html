@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Blockchain Explorer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+      var socket = io();
+
+      socket.on('update_data', function(data) {
+        console.log('Data updated:', data);
+        updateBlocks(data.blocks);
+        updateTransactions(data.transactions);
+        updateUsers(data.users);
+      });
+
+      socket.on('connect', function() {
+        console.log('Connected to server');
+      });
+
+      socket.on('disconnect', function() {
+        console.log('Disconnected from server');
+      });
+
+      // Function to update blocks table
+      function updateBlocks(blocks) {
+        const blocksTableBody = document.getElementById('blocksTable').getElementsByTagName('tbody')[0];
+        blocksTableBody.innerHTML = ''; // Clear previous data
+
+        for (const blockName in blocks) {
+          const block = blocks[blockName][0];
+          const transactions = blocks[blockName].slice(1); // Exclude the first entry (block info)
+
+          const row = blocksTableBody.insertRow();
+          row.insertCell().textContent = blockName;
+          row.insertCell().textContent = block.date;
+          row.insertCell().textContent = block.hash;
+          row.insertCell().textContent = block.stamp;
+          row.insertCell().textContent = transactions.length;
+        }
+      }
+
+      // Function to update transactions table
+      function updateTransactions(transactions) {
+        const transactionsTableBody = document.getElementById('transactionsTable').getElementsByTagName('tbody')[0];
+        transactionsTableBody.innerHTML = ''; // Clear previous data
+
+        for (const transaction of transactions) {
+          const row = transactionsTableBody.insertRow();
+          row.insertCell().textContent = transaction.date;
+          row.insertCell().textContent = transaction.user;
+          row.insertCell().textContent = transaction.recipient;
+          row.insertCell().textContent = transaction.amount;
+        }
+      }
+
+      // Function to update users table
+      function updateUsers(users) {
+        const usersTableBody = document.getElementById('usersTable').getElementsByTagName('tbody')[0];
+        usersTableBody.innerHTML = ''; // Clear previous data
+
+        for (const username in users) {
+          const balance = users[username];
+          const row = usersTableBody.insertRow();
+          row.insertCell().textContent = username;
+          row.insertCell().textContent = balance;
+        }
+      }
+    });
+  </script>
+</head>
+<body>
+
+  <h1>My Blockchain Explorer</h1>
+
+  <h2>Blocks</h2>
+  <table id="blocksTable">
+    <thead>
+      <tr>
+        <th>Block Name</th>
+        <th>Date</th>
+        <th>Hash</th>
+        <th>Stamp</th>
+        <th>Transactions</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <h2>Transactions</h2>
+  <table id="transactionsTable">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>User</th>
+        <th>Recipient</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <h2>Users</h2>
+  <table id="usersTable">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+</body>
+</html>
